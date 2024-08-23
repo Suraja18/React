@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 // import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import './App.css';
 import MyHeader from './components/Header';
+import Welcome from './components/Welcome';
+import AllTable from './components/AllTable';
+import Counter from './components/Counter';
 import { ProductData } from './Product';
+import Footer from './components/Footer';
+import AddProduct from './components/AddProduct';
 
 function App() {
 
@@ -82,75 +87,68 @@ function App() {
     <div className="App">
       <div className="container">
           <div className="form-container">
+          <Welcome />
+          <Counter />
+          <AddProduct />
           <h2>Add Products</h2>
-            <div className="form">
-              <div className="form-group">
+          <div className="form">
+            <div className="form-group">
+              <div className="form-input">
+                    <label htmlFor="name">Name:</label>
+                    <input type="text" id="name" placeholder="Name" onChange={(e) => setName(e.target.value)} value={name} />
+                </div>
                 <div className="form-input">
-                      <label htmlFor="name">Name:</label>
-                      <input type="text" id="name" placeholder="Name" onChange={(e) => setName(e.target.value)} value={name} />
-                  </div>
-                  <div className="form-input">
-                      <label htmlFor="type">Type:</label>
-                      <input type="text" id="type" placeholder="Type" onChange={(e) => setType(e.target.value)} value={type} />
-                  </div>
-                  <div className="form-input">
-                      <label htmlFor="price">Price (Rs):</label>
-                      <input type="number" id="price" placeholder="Price" onChange={(e) => setPrice(e.target.value)} value={price} />
-                  </div>
-                  <div className="form-input">
-                      <label htmlFor="color">Color:</label>
-                      <input type="text" id="color" placeholder="Color" onChange={(e) => setColor(e.target.value)} value={color} />
-                  </div>
-                  <div className="form-input">
-                    {
-                      !update ?
-                      <button className="btn add" onClick={(e) => addData(e)}>Add</button>
-                      :
-                      <button className="btn edit" onClick={() => updateData()}>Update</button>
-                    }
-                    <button className="btn delete" onClick={() => clearData()}>Clear</button>
-                  </div>
-                  
-              </div>
+                    <label htmlFor="type">Type:</label>
+                    <input type="text" id="type" placeholder="Type" onChange={(e) => setType(e.target.value)} value={type} />
+                </div>
+                <div className="form-input">
+                    <label htmlFor="price">Price (Rs):</label>
+                    <input type="number" id="price" placeholder="Price" onChange={(e) => setPrice(e.target.value)} value={price} />
+                </div>
+                <div className="form-input">
+                    <label htmlFor="color">Color:</label>
+                    <input type="text" id="color" placeholder="Color" onChange={(e) => setColor(e.target.value)} value={color} />
+                </div>
+                <div className="form-input">
+                  {
+                    !update ?
+                    <button className="btn add" onClick={(e) => addData(e)}>Add</button>
+                    :
+                    <button className="btn edit" onClick={() => updateData()}>Update</button>
+                  }
+                  <button className="btn delete" onClick={() => clearData()}>Clear</button>
+                </div>
                 
             </div>
+              
+          </div>
         </div>
         <div className="form-container" style={{ marginTop: '15px' }}>
           <MyHeader />
-          <table>
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Price (Rs)</th>
-                <th>Color</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                data.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{item.Name}</td>
-                      <td>{item.Type}</td>
-                      <td>{item.Price}</td>
-                      <td>{item.Color}</td>
-                      <td>
-                        <button className="btn edit" onClick={() => editData(item.id)}>Edit</button>
-                        <button className="btn delete" onClick={() => deleteData(item.id)}>Delete</button>
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
+          <AllTable>
+            {
+              data.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.Name}</td>
+                    <td>{item.Type}</td>
+                    <td>{item.Price}</td>
+                    <td>{item.Color}</td>
+                    <td>
+                      <button className="btn edit" onClick={() => editData(item.id)}>Edit</button>
+                      <button className="btn delete" onClick={() => deleteData(item.id)}>Delete</button>
+                    </td>
+                  </tr>
+                )
+              })
+            }
+          </AllTable>
+          
         </div>
         
       </div>
+      <Footer />
     </div>
   );
 }
