@@ -14,7 +14,7 @@
   gap: 2rem;
 }
 
-.form-input .btn{
+.btn.add{
   height: 3rem;
   margin-bottom: 0;
   margin-top: 1.5625rem;
@@ -43,12 +43,17 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-.form-input button:hover {
+.form-input button:hover, .btn.add:hover {
   background-color: transparent;
   color: #000000;
 }
-
-
+.error-message {
+  color: #d9534f;
+  font-size: 10px;
+  margin-top: -5px;
+  margin-bottom: 16px;
+  display: block;
+}
 .container {
   margin: 1.5rem 5rem;
 }

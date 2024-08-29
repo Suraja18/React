@@ -9,7 +9,8 @@ function AllHeader() {
                 <nav>
                     <ul>
                         <li><NavLink to="/">Home</NavLink></li>
-                        <li><NavLink to="/table">Table</NavLink></li>
+                        <li><NavLink to="/table">Rapid API Fetch Table</NavLink></li>
+                        <li><NavLink to="/user">Table with MySQL</NavLink></li>
                     </ul>
                 </nav>
             </div>
