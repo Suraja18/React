@@ -134,3 +134,36 @@ th, td {
   color: #000000;
 }
 
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  justify-content: right;
+}
+
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #333;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination li:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination li.active {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+}
+
+.pagination li.disabled {
+  cursor: not-allowed;
+  color: #ccc;
+  border-color: #ddd;
+}

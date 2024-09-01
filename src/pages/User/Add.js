@@ -1,27 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './User.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 function Add() {
-
+    const navigate = useNavigate();
     const { register, formState:{errors}, handleSubmit} = useForm();
+    const [successMessage, setSuccessMessage] = useState();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async(data) => {
+
+        const res = axios.post("http://localhost:7000/api/user/store", data)
+        .then(response => {
+            setSuccessMessage(response.data);
+        });
+
+        if(!successMessage)
+        {
+            setSuccessMessage(res.data);
+            setTimeout(()=>{
+                navigate('/user');
+            }, 2000);
+        } else{
+            setSuccessMessage("Some Error Occured");
+        }
     }
 
     return (
-        <div className='sql-body'>
+        <>
+        <div className='sql-body' id="form">
             <div className="form-container">
                 <h2>Add User Details</h2>
+                <p>{successMessage}</p>
                 <form onSubmit={ handleSubmit(onSubmit) }>
                     <div className="form-group">
                         <label htmlFor="name">Name:</label>
                         <input type="text" {...register("name", {required:true, pattern: /^[a-zA-Z0-9_\s]+$/i})} id="name" />
                     </div>
                     <span className='error-message'>{ errors.name?.type==="required" && "Name is required" }</span>
-                    <span className='error-message'>{ errors.address?.type==="pattern" && "Name is in Wrong Format" }</span>
+                    <span className='error-message'>{ errors.name?.type==="pattern" && "Name is in Wrong Format" }</span>
                     <div className="form-group">
                         <label htmlFor="address">Address:</label>
                         <input type="text" id="address" {...register("address", {required:true, pattern: /^[a-zA-Z0-9_\s]+$/i})} />
@@ -45,6 +63,7 @@ function Add() {
                 </form>
             </div>
         </div>
+        </>
     )
 }
 
