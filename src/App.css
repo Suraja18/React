@@ -167,3 +167,149 @@ th, td {
   color: #ccc;
   border-color: #ddd;
 }
+
+/* Responsive Table */
+.users-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.users-table th {
+  background-color: #f0f0f0;
+}
+
+.edit-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  margin: 0 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination-button.active{
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+
+@media (max-width: 880px){
+  .users-container{
+    margin: 10px;
+    width: 100%;
+  }
+}
+@media (max-width: 720px) {
+  .users-table tr td.table-expand:nth-child(2)::before {
+    margin-right: .5em;
+    display: inline-block;
+    box-sizing: border-box;
+    content: "";
+    border-top: 5px solid transparent;
+    border-left: 10px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid transparent;
+    border-right: 0px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .users-table tr.tr-expanding td.table-expand:nth-child(2)::before {
+    transform: rotate(90deg);
+  }
+
+  .users-table th:nth-child(5),
+  .users-table td:nth-child(5) {
+    display: none;
+  }
+
+}
+@media (max-width: 650px){
+  .users-table th:nth-child(4),
+  .users-table td:nth-child(4) {
+    display: none;
+  }
+}
+@media (max-width: 555px){
+  .users-table th:nth-child(3),
+  .users-table td:nth-child(3) {
+    display: none;
+  }
+}
+
+.user-details-row {
+  display: none;
+  background-color: #f9f9f9;
+}
+
+.user-details-row td {
+  padding: 5px;
+}
+
+.expanded-row .user-details-row {
+  display: table-row;
+}
+
+.r-table-title {
+  font-weight: bold;
+}
+
+.r-table-data {
+  margin-left: 10px;
+}
+
+.r-table-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.r-table-details li {
+  padding: 5px 0;
+}
