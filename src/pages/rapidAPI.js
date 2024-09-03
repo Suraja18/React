@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AllHeader from '../components/AllHeader';
 import React, { useEffect, useState } from 'react';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
 
   return (
     <div>
+      <AllHeader />
       <h1>Working Days</h1>
       <table>
         <thead>

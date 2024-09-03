@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import AllHeader from '../components/AllHeader';
 
 function Responsive() {
-    const [users, setUsers] = useState([
+    const [users] = useState([
         { id: 1, name: 'Rujal Sapkota', email: 'r@gmail.com', role: 'user', createdAt: '2015-02-11' },
         { id: 2, name: 'Suraj Adhikari', email: 'suraj@gmail.com', role: 'user', createdAt: '2015-08-15' },
         { "id": 3, "name": "Julio Wasselin", "email": "jwasselin2@cargocollective.com", "role": "Male", "createdAt": "1/8/2024" },
@@ -82,7 +83,7 @@ function Responsive() {
 
     const handleResize = () => {
         let newHiddenColumns = [];
-        let matchedMaxWidth = Infinity; // Initialize with a large value
+        let matchedMaxWidth = Infinity; 
     
         const mediaQueries = [
             { maxWidth: 720, columns: ['Created At'] },
@@ -107,6 +108,8 @@ function Responsive() {
     }, []);
 
     return (
+        <>
+        <AllHeader />
         <div className="users-container">
             <h1>Users</h1>
             <div className="search-bar">
@@ -194,6 +197,7 @@ function Responsive() {
                 </button>
             </div>
         </div>
+        </>
     );
 }
 

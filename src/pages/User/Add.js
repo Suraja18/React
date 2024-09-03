@@ -3,6 +3,7 @@ import './User.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import AllHeader from '../../components/AllHeader';
 
 function Add() {
     const navigate = useNavigate();
@@ -29,6 +30,7 @@ function Add() {
 
     return (
         <>
+        <AllHeader />
         <div className='sql-body' id="form">
             <div className="form-container">
                 <h2>Add User Details</h2>

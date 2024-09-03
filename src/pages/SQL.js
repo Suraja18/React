@@ -4,6 +4,7 @@ import '../App.css';
 import axios from 'axios';
 import { useReactToPrint } from 'react-to-print';
 import ReactPaginate from 'react-paginate';
+import AllHeader from '../components/AllHeader';
 
 function SQL() {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ function SQL() {
 
   return (
     <div>
+      <AllHeader />
       <Link to="/user/add" className="btn add" style={{ padding: 10, marginRight: 25, height: 24, float: 'right', textDecoration: 'none' }}>Add New</Link>
       <button className="btn add" onClick={generatePDF} style={{ marginRight: 5, height: 46, float: 'right', textDecoration: 'none' }}>PDF</button>
       <div ref={componentPDF} style={{ width: '100%' }}>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import AllHeader from '../../components/AllHeader';
 
 function Edit() {
     const { id } = useParams();
@@ -44,6 +45,7 @@ function Edit() {
 
     return (
         <>
+        <AllHeader />
             <div className='sql-body' id="form">
                 <div className="form-container">
                     <h2>Update User Details</h2>

@@ -8,6 +8,7 @@ import { ProductData } from '../Product';
 import Footer from '../components/Footer';
 import Buttons from '../components/Buttons';
 import HooksCounter from '../components/HooksCounter';
+import AllHeader from '../components/AllHeader';
 
 
 function Home() {
@@ -99,6 +100,7 @@ function Home() {
 
   return (
     <>
+    <AllHeader />
       <div className="App">
         <div className="container">
           <div className="form-container">
