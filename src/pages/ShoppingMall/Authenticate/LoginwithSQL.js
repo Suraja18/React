@@ -1,83 +1,91 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './login.css';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { auth, googleProvider } from '../config/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-import Swal from 'sweetalert2';
+import axios from 'axios';
+import bcrypt from "bcryptjs-react";
 
-function Login() {
+function LoginwithSQL() {
     const navigate = useNavigate();
     const { register: registerRegister, formState: { errors: errorsRegister }, handleSubmit: handleSubmitRegister } = useForm();
     const { register: registerLogin, formState: { errors: errorsLogin }, handleSubmit: handleSubmitLogin } = useForm();
+    const [successMessage, setSuccessMessage] = useState();
+    const [height, setHeight] = useState(500);
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                navigate('/shopping-mall/admin');
-            }
-        })
-    }, [navigate]);
+        const errorCount = Object.keys(errorsRegister).length;
+        setHeight(500 + errorCount * 28);
+    }, [errorsRegister]);
 
     const onRegister = async (data) => {
         try {
-            await createUserWithEmailAndPassword(auth, data.email, data.password)
-                .then(() => {
-                    Swal.fire('Success!', 'User Successfully Registered', 'success');
-                    setTimeout(() => {
-                        navigate('/login');
-                    }, 3000);
-                });
-        } catch (error) {
-            if (error.code === 'auth/email-already-in-use') {
-                Swal.fire('Error', 'Email address is already in use.', 'error');
+            const allUser = await axios.get("http://localhost:7000/api/client/");
+            const ifUserExist = allUser.data.map((client) => client.email);
+
+            if (ifUserExist.includes(data.email)) {
+                setSuccessMessage("Email already exists");
             } else {
-                Swal.fire('Error', 'An error occurred. Please try again later.', 'error');
+                const hashedPassword = await bcrypt.hash(data.password, 10);
+                data.password = hashedPassword;
+                const res = await axios.post("http://localhost:7000/api/client/store", data);
+                if (res.data.success) {
+                    setSuccessMessage(res.data.message);
+                    setTimeout(() => {
+                        navigate('/test/login');
+                    }, 2000);
+                } else {
+                    setSuccessMessage("Some Error Occured");
+                }
+            }
+        } catch (error) {
+            if (error.response) {
+                setSuccessMessage(error.response.data.message);
+            } else {
+                setSuccessMessage("An error occurred. Please try again later.");
             }
         }
     };
 
     const onLogin = async (data) => {
         try {
-            await signInWithEmailAndPassword(auth, data.email, data.password)
-                .then(() => {
-                    Swal.fire('Success!', 'Login Successful', 'success');
-                    setTimeout(() => {
-                        navigate('/shopping-mall/admin');
-                    }, 3000);
-                });
-        } catch (error) {
-            if (error.code === 'auth/invalid-credential') {
-                Swal.fire('Error', `Email address and password don't match.`, 'error');
+            const res = await axios.post("http://localhost:7000/api/client/login", data);
+            if (res.data.success) {
+                setSuccessMessage(res.data.message);
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000);
             } else {
-                Swal.fire('Error', 'An error occurred. Please try again later.', 'error');
+                setSuccessMessage(res.data.message);
+            }
+        } catch (error) {
+            if (error.response) {
+                setSuccessMessage(error.response.data.message);
+            } else {
+                setSuccessMessage("An error occurred. Please try again later.");
             }
         }
     };
-
-    const SignInWithGoogle = async () => {
-        try {
-            await signInWithPopup(auth, googleProvider)
-                .then(() => {
-                    Swal.fire('Success!', 'Login Successful', 'success');
-                    setTimeout(() => {
-                        navigate('/shopping-mall/admin');
-                    }, 3000);
-                });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+    
 
     return (
         <div id='login'>
-            <div className="main">
+            <div className="main" style={{ height: `${height}px` }}>
                 <input className='inputLogin' type="checkbox" id="chk" aria-hidden="true" />
-
+                
                 <div className="signup">
                     <form onSubmit={handleSubmitRegister(onRegister)}>
                         <label className='labelLogin' htmlFor="chk" aria-hidden="true">Sign up</label>
+                        <input className='inputLogin'
+                            type="text"
+                            {...registerRegister("name", { required: true, pattern: /^[a-zA-Z0-9_\s]+$/i })}
+                            placeholder="Full name"
+                        />
+                        {errorsRegister.name && (
+                            <>
+                                <span className='error-message center'>{errorsRegister.name.type === "required" && "Name is required"}</span>
+                                <span className='error-message center'>{errorsRegister.name.type === "pattern" && "Name is in Wrong Format"}</span>
+                            </>
+                        )}
 
                         <input className='inputLogin'
                             type="email"
@@ -88,6 +96,17 @@ function Login() {
                             <>
                                 <span className='error-message center'>{errorsRegister.email?.type === "required" && "Email is required"}</span>
                                 <span className='error-message center'>{errorsRegister.email?.type === "pattern" && "Email Address is in Wrong Format"}</span>
+                            </>
+                        )}
+                        <input className='inputLogin'
+                            type="number"
+                            {...registerRegister("phone", { required: true, pattern: /^\d{10}$/i })}
+                            placeholder="Phone"
+                        />
+                        {errorsRegister.phone && (
+                            <>
+                                <span className='error-message center'>{errorsRegister.phone?.type === "required" && "Phone Number is required"}</span>
+                                <span className='error-message center'>{errorsRegister.phone?.type === "pattern" && "Phone Number must 10 digits number"}</span>
                             </>
                         )}
                         <input className='inputLogin'
@@ -130,10 +149,7 @@ function Login() {
                             </>
                         )}
                         <button className='loginButton'>Login</button>
-                        <div onClick={SignInWithGoogle} className="google-sign-in-link">
-                            <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" />
-                            Login with Google
-                        </div>
+                        <p className='error-message center'>{successMessage}</p>
                     </form>
                 </div>
             </div>
@@ -141,4 +157,4 @@ function Login() {
     )
 }
 
-export default Login
+export default LoginwithSQL

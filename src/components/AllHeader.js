@@ -12,6 +12,7 @@ function AllHeader() {
                         <li><NavLink to="/table">Rapid API Fetch Table</NavLink></li>
                         <li><NavLink to="/user">Table with MySQL</NavLink></li>
                         <li><NavLink to="/responsive/table">Responsive Table</NavLink></li>
+                        <li><NavLink to="/test/login">Authentication Test with SQL</NavLink></li>
                         <li><NavLink to="/shopping-mall">Shopping Mall</NavLink></li>
                     </ul>
                 </nav>

@@ -91,3 +91,20 @@
 .error-message.center{
     text-align: center;
 }
+.google-sign-in-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1rem;
+	color: #4285f4;
+	text-decoration: none;
+	cursor: pointer;
+  }
+  
+  .google-sign-in-link img {
+	margin-right: 10px;
+  }
+  
+  .google-sign-in-link:hover {
+	text-decoration: underline;
+  }

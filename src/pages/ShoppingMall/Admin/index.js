@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import AdminLayout from '../../../components/ShoppingMall/Admin/Layout';
 
-function index() {
+function Index() {
+
+
   return (
-    <div>Admin index</div>
+    <>
+      <AdminLayout>
+        <div>Helll0</div>
+      </AdminLayout>
+    </>
   )
 }
 
-export default index
+export default Index
