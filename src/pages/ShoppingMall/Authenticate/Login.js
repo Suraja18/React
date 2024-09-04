@@ -14,7 +14,7 @@ function Login() {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                navigate('/shopping-mall/admin');
+                navigate('/shopping-mall/admin/dashboard');
             }
         })
     }, [navigate]);
@@ -43,7 +43,7 @@ function Login() {
                 .then(() => {
                     Swal.fire('Success!', 'Login Successful', 'success');
                     setTimeout(() => {
-                        navigate('/shopping-mall/admin');
+                        navigate('/shopping-mall/admin/dashboard');
                     }, 3000);
                 });
         } catch (error) {
@@ -61,7 +61,7 @@ function Login() {
                 .then(() => {
                     Swal.fire('Success!', 'Login Successful', 'success');
                     setTimeout(() => {
-                        navigate('/shopping-mall/admin');
+                        navigate('/shopping-mall/admin/dashboard');
                     }, 3000);
                 });
         } catch (error) {

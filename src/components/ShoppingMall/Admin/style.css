@@ -1,0 +1,250 @@
+.app-container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #222;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    height: 90vh;
+  }
+  
+  .sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .sidebar-items {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #333;
+  }
+  
+  .sidebar-item.active {
+    background-color: #3690ab;
+  }
+  
+  .sidebar-item i {
+    margin-right: 10px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .navbar-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-title i {
+    margin-right: 10px;
+  }
+  
+  .navbar-tabs {
+    display: flex;
+  }
+  
+  .navbar-tab {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: 10px;
+  }
+  
+  .navbar-tab:hover {
+    background-color: #eee;
+  }
+  
+  .navbar-tab.active {
+    background-color: #eee;
+  }
+  
+  
+  .footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #eee;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .dashboard-card {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-card-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-card-chart {
+    height: 150px;
+    position: relative;
+  }
+  
+  .dashboard-card-chart-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    height: 2px;
+    background-color: #333;
+  }
+  
+  .dashboard-card-chart-dot {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #333;
+  }
+  .content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f2f2f2;
+  }
+  
+  .header {
+    margin-bottom: 20px;
+  }
+  
+  .header .page-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .header .breadcrumb {
+    background-color: transparent;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .card-header {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .card-header .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  
+  .card-header .card-category {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .card-body {
+    padding: 15px;
+    background-color: #fff;
+  }
+  
+  .card-body .card-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-body .card-stats .stats {
+    text-align: left;
+  }
+  
+  .card-body .card-stats .stats .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card-body .card-stats .stats .desc {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .card-chart {
+    height: 400px;
+  }
+  
+  .card-chart .chart-area {
+    height: 350px;
+  }
+  
+  .nav-pills .nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  /* Custom styles for the chart */
+  .card-user.card-purple {
+    background-color: #9c27b0; /* Purple */
+  }
+  
+  .card-user.card-blue {
+    background-color: #00bcd4; /* Blue */
+  }
+  
+  .card-user.card-orange {
+    background-color: #ff9800; /* Orange */
+  }
+  
+  .card-user.card-red {
+    background-color: #f44336; /* Red */
+  }
+  
+  .card-user.card-chart {
+    background-color: #fff;
+  }

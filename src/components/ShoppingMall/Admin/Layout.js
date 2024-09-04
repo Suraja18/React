@@ -1,7 +1,10 @@
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { auth } from '../../../pages/ShoppingMall/config/firebase';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import './style.css';
 
 const Layout = (props) => {
   const navigate = useNavigate();
@@ -9,7 +12,7 @@ const Layout = (props) => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if(user){
+      if (user) {
         setUser(user.email);
       } else {
         navigate('/login');
@@ -18,10 +21,19 @@ const Layout = (props) => {
   }, [navigate]);
   return (
     <>
-      <div>ADMIN INDEX PAGE</div>
-      <div>Hello {user}</div>
-      <button onClick={() => signOut(auth)}>Logout</button>
-      {props.children}
+      <div className="app-container">
+        <Sidebar />
+        <div className="main-content">
+          <Navbar />
+
+          <div className="content">
+            {props.children}
+          </div>
+        </div>
+        <div className="footer">
+          <span>Copyright © 2024</span>
+        </div>
+      </div>
     </>
   )
 }
