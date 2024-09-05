@@ -1,5 +1,5 @@
 import { signOut } from 'firebase/auth';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../../pages/ShoppingMall/config/firebase';
 

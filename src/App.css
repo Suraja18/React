@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .form-container {
   background-color: #fff;
   padding: 20px;
@@ -203,15 +207,24 @@ th, td {
   background-color: #f0f0f0;
 }
 
-.edit-button {
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
+
+.button{
+  padding: 8px;
+  background-color: transparent;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
+.edit-button {
+  color: #4CAF50;
+}
+.view-button {
+  color: #007BFF;
+}
+.delete-button {
+  color: #ba2525;
+}
 .pagination {
   display: flex;
   justify-content: right;

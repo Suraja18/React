@@ -8,14 +8,11 @@ import './style.css';
 
 const Layout = (props) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user.email);
-      } else {
+      if (!user) {
         navigate('/login');
       }
     });

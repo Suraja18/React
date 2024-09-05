@@ -32,7 +32,7 @@ function SQL() {
   });
 
   const editData = (id) => {
-    axios.get(`http://localhost:7000/api/user/${id}`)
+    axios.get(`http://localhost:7000/api/user/${id}`) 
       .then(res => {
         if (res.data) {
           navigate(`/user/edit/${id}`);

@@ -12,6 +12,9 @@ import LoginwithSQL from './pages/ShoppingMall/Authenticate/LoginwithSQL';
 import AdminIndex from './pages/ShoppingMall/Admin';
 import PrivateRoute from './PrivateRoute';
 import MallIndex from './pages/ShoppingMall/Admin/Malls';
+import MallsAdd from './pages/ShoppingMall/Admin/Malls/Add';
+import MallsView from './pages/ShoppingMall/Admin/Malls/View';
+import MallsEdit from './pages/ShoppingMall/Admin/Malls/Edit';
 
 function Router() {
     return (
@@ -34,6 +37,9 @@ function Router() {
                 <Route path="/shopping-mall/admin" element={<PrivateRoute />}>
                     <Route path="dashboard" element={<AdminIndex />} />
                     <Route path="malls" element={<MallIndex />} />
+                    <Route path="malls/add" element={<MallsAdd />} />
+                    <Route path="malls/view/:id" element={<MallsView />} />
+                    <Route path="malls/edit/:id" element={<MallsEdit />} />
                 </Route>
 
             </Routes>

@@ -17,7 +17,7 @@ function Sidebar({ isSidebarOpen, closeSidebar }) {
 
     useEffect(() => {
         const currentPath = location.pathname;
-        const matchedItem = sidebarItems.find((item) => item.link === currentPath);
+        const matchedItem = sidebarItems.find((item) => currentPath.startsWith(item.link));
         if (matchedItem) {
             setActiveItem(matchedItem.name);
         }
