@@ -247,7 +247,7 @@ th, td {
   }
 }
 @media (max-width: 720px) {
-  .users-table tr td.table-expand:nth-child(2)::before {
+  .users-table tr td.table-expand:nth-child(2)::before { 
     margin-right: .5em;
     display: inline-block;
     box-sizing: border-box;

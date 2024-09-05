@@ -3,12 +3,24 @@
   }
   
   .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 200px;
     background-color: #222;
     color: #fff;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    height: 90vh;
+    height: 100vh;
+    overflow-y: auto; 
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    transform: translateX(0);
+    max-width: 100vw;
+  }
+
+  .menu-icon {
+    display: none;
   }
   
   .sidebar-header {
@@ -47,8 +59,10 @@
   }
   
   .main-content {
+    margin-left: 250px;
     flex: 1;
     padding: 20px;
+    transition: margin-left 0.3s ease;
   }
   
   .navbar {
@@ -85,7 +99,6 @@
   .navbar-tab.active {
     background-color: #eee;
   }
-  
   
   .footer {
     text-align: center;
@@ -247,4 +260,56 @@
   
   .card-user.card-chart {
     background-color: #fff;
+  }
+  .sidebar.open{
+    transform: translateX(0%);
+    width: 100%;
+  }
+  .sidebar-header{
+    position: relative;
+  }
+  .menu-icon-close{
+    position: absolute;
+    right: 0;
+    top: 6px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 992px){
+    .menu-icon {
+      font-size: 1.5rem;
+      color: #222;
+      display: block;
+      cursor: pointer;
+    }
+    .sidebar{
+      transform: translateX(-100%);
+    }
+    .main-content{
+      margin-left: 0;
+    }
+    .sidebar{
+      max-width: 95vw;
+    }
+  }
+
+  @media (max-width: 480px){
+    .app-container {
+      display: unset;
+    }
+    .search-bar{
+      margin-right: 20px;
+    }
+    .search-bar input {
+      width: 100%;
+    }
+    .pagination{
+      display: flow;
+    }
+    .pagination > button{
+      margin-top: 10px;
+    }
+    .sidebar{
+      max-width: 90vw;
+    }
   }

@@ -9,6 +9,7 @@ import './style.css';
 const Layout = (props) => {
   const navigate = useNavigate();
   const [user, setUser] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -19,12 +20,16 @@ const Layout = (props) => {
       }
     });
   }, [navigate]);
+
+    const toggleSidebar = () => {
+      setSidebarOpen(!sidebarOpen);
+  };
   return (
     <>
       <div className="app-container">
-        <Sidebar />
+        <Sidebar isSidebarOpen={sidebarOpen} closeSidebar={toggleSidebar} />
         <div className="main-content">
-          <Navbar />
+          <Navbar toggleSidebar={toggleSidebar} />
 
           <div className="content">
             {props.children}
