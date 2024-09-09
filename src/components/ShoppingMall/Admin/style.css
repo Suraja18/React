@@ -307,9 +307,6 @@
     .main-content{
       margin-left: 0;
     }
-    .sidebar{
-      max-width: 95vw;
-    }
   }
 
   @media (max-width: 480px){
@@ -327,9 +324,6 @@
     }
     .pagination > button{
       margin-top: 10px;
-    }
-    .sidebar{
-      max-width: 90vw;
     }
     .edit-button.add-search{
       position: relative;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AdminLayout from '../../../../components/ShoppingMall/Admin/Layout';
 import TableButton from '../../../../components/ShoppingMall/Admin/TableButton';
 import { collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -8,26 +8,33 @@ import Swal from 'sweetalert2';
 import { deleteObject, ref } from 'firebase/storage';
 
 const Index = () => {
-    const [malls, setMalls] = useState([]);
-    const mallsCollectionRef = collection(db, "malls");
+    const [shops, setShops] = useState([]);
+    const shopsCollectionRef = useMemo(() => collection(db, "shops"), []);
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const mallsPerPage = 3;
+    const shopsPerPage = 3;
     const [expandedRow, setExpandedRow] = useState(null);
     const [hiddenColumns, setHiddenColumns] = useState([]);
 
-    React.useEffect(() => {
-
-        const getMalls = async () => {
-            const data = await getDocs(mallsCollectionRef);
-            setMalls(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        }
-        getMalls();
+    useEffect(() => {
+        const getShops = async () => {
+            const data = await getDocs(shopsCollectionRef);
+            const shopsData = await Promise.all(
+                data.docs.map(async (shopDoc) => {
+                    const shop = shopDoc.data();
+                    const mallDoc = await getDoc(doc(db, "malls", shop.mall_id));
+                    const mallData = mallDoc.exists() ? mallDoc.data() : {};
+                    return { ...shop, id: shopDoc.id, mallName: mallData.name, mallLocation: mallData.location };
+                })
+            );
+            setShops(shopsData);
+        };
+        getShops();
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [mallsCollectionRef]);
+    }, [shopsCollectionRef]);
 
     const handleRowClick = (userId) => {
         setExpandedRow(expandedRow === userId ? null : userId);
@@ -37,13 +44,13 @@ const Index = () => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredMalls = malls.filter((user) =>
+    const filteredShops = shops.filter((user) =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const indexOfLastUser = currentPage * mallsPerPage;
-    const indexOfFirstUser = indexOfLastUser - mallsPerPage;
-    const currentMalls = filteredMalls.slice(indexOfFirstUser, indexOfLastUser);
+    const indexOfLastUser = currentPage * shopsPerPage;
+    const indexOfFirstUser = indexOfLastUser - shopsPerPage;
+    const currentShops = filteredShops.slice(indexOfFirstUser, indexOfLastUser);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -54,7 +61,7 @@ const Index = () => {
         const mediaQueries = [
             { maxWidth: 720, columns: ['Image'] },
             { maxWidth: 650, columns: ['Image', 'Opening Hours'] },
-            { maxWidth: 555, columns: [ 'Image', 'Location', 'Opening Hours'] },
+            { maxWidth: 555, columns: [ 'Image', 'Contact', 'Opening Hours'] },
         ];
 
         for (const mediaQuery of mediaQueries) {
@@ -68,42 +75,42 @@ const Index = () => {
     };
 
     const addForm = () => {
-        navigate('/shopping-mall/admin/malls/add')
+        navigate('/shopping-mall/admin/shops/add')
     }
 
     const viewData = async (id) => {
-        const mallDoc = doc(db, "malls", id);
+        const mallDoc = doc(db, "shops", id);
         await getDoc(mallDoc).then((doc) => {
             if (doc.exists()) {
-                navigate(`/shopping-mall/admin/malls/view/${id}`);
+                navigate(`/shopping-mall/admin/shops/view/${id}`);
             } else {
-                Swal.fire('Error', `Malls doesn't exist`, 'error');
+                Swal.fire('Error', `Shops doesn't exist`, 'error');
             }
         });
     }
 
     const editData = async (id) => {
-        const mallDoc = doc(db, "malls", id);
+        const mallDoc = doc(db, "shops", id);
         await getDoc(mallDoc).then((doc) => {
             if (doc.exists()) {
-                navigate(`/shopping-mall/admin/malls/edit/${id}`);
+                navigate(`/shopping-mall/admin/shops/edit/${id}`);
             } else {
-                Swal.fire('Error', `Malls doesn't exist`, 'error');
+                Swal.fire('Error', `Shops doesn't exist`, 'error');
             }
         });
     }
 
     const deleteData = async (id) => {
-        const mallDoc = doc(db, "malls", id);
+        const mallDoc = doc(db, "shops", id);
         await getDoc(mallDoc).then(async (doc) => {
             if (doc.exists()) {
                 const oldImageRef = ref(storage, `${doc.data().image}`);
                 await deleteObject(oldImageRef);
                 await deleteDoc(mallDoc);
-                Swal.fire('Success', `Malls deleted Successfully`, 'success');
-                setMalls((prevMalls) => prevMalls.filter((mall) => mall.id !== id));
+                Swal.fire('Success', `Shops deleted Successfully`, 'success');
+                setShops((prevShops) => prevShops.filter((shop) => shop.id !== id));
             } else {
-                Swal.fire('Error', `Malls doesn't exist`, 'error');
+                Swal.fire('Error', `Shops doesn't exist`, 'error');
             }
         });
         
@@ -113,7 +120,7 @@ const Index = () => {
         <>
             <AdminLayout>
                 <div>
-                <h3 className="text-3xl font-bold dark:text-white mb-6">Shopping Mall</h3>
+                <h3 className="text-3xl font-bold dark:text-white mb-6">Shops</h3>
                     <div className="search-bar">
                         <input
                             type="text"
@@ -128,19 +135,19 @@ const Index = () => {
                             <tr>
                                 <th>S.No</th>
                                 <th>Name</th>
-                                <th>Location</th>
+                                <th>Contact</th>
                                 <th>Opening Hours</th>
                                 <th>Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentMalls.map((user, index) => (
+                            {currentShops.map((user, index) => (
                                 <React.Fragment key={index}>
                                     <tr className={expandedRow === user.id ? 'tr-expanding' : ''}>
                                         <td>{index + 1}</td>
-                                        <td className="table-expand" onClick={() => handleRowClick(user.id)}>{user.name}</td>
-                                        <td data-name="Location">{user.location}</td>
+                                        <td className="table-expand before" onClick={() => handleRowClick(user.id)}>{user.name}</td>
+                                        <td data-name="Contact">{user.contact}</td>
                                         <td data-name="Opening Hours">{user.opening_hours}</td>
                                         <td data-name="Image"><img alt={user.name} className='img-mob' src={user.image} /></td>
                                         <td><TableButton view={(id) => viewData(user.id)} update={(id) => editData(user.id)} delete={(id) => deleteData(user.id)} /></td>
@@ -164,6 +171,14 @@ const Index = () => {
                                                         }
                                                         return null;
                                                     })}
+                                                    <li>
+                                                        <span className="r-table-title">Malls Name :</span>
+                                                        <span className="r-table-data">{user.mallName}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span className="r-table-title">Malls Location :</span>
+                                                        <span className="r-table-data">{user.mallLocation}</span>
+                                                    </li>
                                                 </ul>
                                             </td>
                                         </tr>
@@ -181,7 +196,7 @@ const Index = () => {
                             disabled={currentPage === 1}>
                             Previous
                         </button>
-                        {Array.from({ length: Math.ceil(malls.length / mallsPerPage) }).map((_, index) => (
+                        {Array.from({ length: Math.ceil(shops.length / shopsPerPage) }).map((_, index) => (
                             <button
                                 key={index + 1}
                                 className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
@@ -193,7 +208,7 @@ const Index = () => {
                         <button
                             className="pagination-button"
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(filteredMalls.length / mallsPerPage)} >
+                            disabled={currentPage === Math.ceil(filteredShops.length / shopsPerPage)} >
                             Next
                         </button>
                     </div>

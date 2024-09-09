@@ -252,7 +252,23 @@ th, td {
   background-color: #ccc;
   cursor: default;
 }
+.users-table tr td.table-expand:nth-child(2)::before { 
+  margin-right: .5em;
+  display: inline-block;
+  box-sizing: border-box;
+  content: "";
+  border-top: 5px solid transparent;
+  border-left: 10px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid transparent;
+  border-right: 0px solid transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: none;
+}
 
+.users-table tr td.table-expand.before:nth-child(2)::before{
+  display: inline-block;
+}
 @media (max-width: 880px){
   .users-container{
     margin: 10px;
@@ -260,19 +276,10 @@ th, td {
   }
 }
 @media (max-width: 720px) {
-  .users-table tr td.table-expand:nth-child(2)::before { 
-    margin-right: .5em;
+  
+  .users-table tr td.table-expand:nth-child(2)::before{
     display: inline-block;
-    box-sizing: border-box;
-    content: "";
-    border-top: 5px solid transparent;
-    border-left: 10px solid rgba(0, 0, 0, 0.5);
-    border-bottom: 5px solid transparent;
-    border-right: 0px solid transparent;
-    cursor: pointer;
-    transition: transform 0.3s ease;
   }
-
   .users-table tr.tr-expanding td.table-expand:nth-child(2)::before {
     transform: rotate(90deg);
   }

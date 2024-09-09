@@ -11,7 +11,7 @@ function Sidebar({ isSidebarOpen, closeSidebar }) {
     const sidebarItems = useMemo(() => [
         { name: 'Dashboard', link: '/shopping-mall/admin/dashboard' },
         { name: 'Malls', link: '/shopping-mall/admin/malls' },
-        { name: 'Shops', link: 'charts' },
+        { name: 'Shops', link: '/shopping-mall/admin/shops' },
         { name: 'Products', link: 'icons' },
     ], []);
 

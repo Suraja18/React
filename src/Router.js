@@ -11,10 +11,14 @@ import Login from './pages/ShoppingMall/Authenticate/Login';
 import LoginwithSQL from './pages/ShoppingMall/Authenticate/LoginwithSQL';
 import AdminIndex from './pages/ShoppingMall/Admin';
 import PrivateRoute from './PrivateRoute';
-import MallIndex from './pages/ShoppingMall/Admin/Malls';
+import MallIndex from './pages/ShoppingMall/Admin/Malls/index';
 import MallsAdd from './pages/ShoppingMall/Admin/Malls/Add';
 import MallsView from './pages/ShoppingMall/Admin/Malls/View';
 import MallsEdit from './pages/ShoppingMall/Admin/Malls/Edit';
+import ShopIndex from './pages/ShoppingMall/Admin/Shops/Index';
+import ShopsAdd from './pages/ShoppingMall/Admin/Shops/Add';
+import ShopsView from './pages/ShoppingMall/Admin/Shops/View';
+import ShopsEdit from './pages/ShoppingMall/Admin/Shops/Edit';
 
 function Router() {
     return (
@@ -40,6 +44,10 @@ function Router() {
                     <Route path="malls/add" element={<MallsAdd />} />
                     <Route path="malls/view/:id" element={<MallsView />} />
                     <Route path="malls/edit/:id" element={<MallsEdit />} />
+                    <Route path="shops" element={<ShopIndex />} />
+                    <Route path="shops/add" element={<ShopsAdd />} />
+                    <Route path="shops/view/:id" element={<ShopsView />} />
+                    <Route path="shops/edit/:id" element={<ShopsEdit />} />
                 </Route>
 
             </Routes>

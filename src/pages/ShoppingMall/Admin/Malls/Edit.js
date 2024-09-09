@@ -76,7 +76,7 @@ const Edit = () => {
   return (
     <>
             <AdminLayout>
-                <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">View <mark className="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">Shopping Malls</mark> data</h1>
+            <h3 className="text-3xl font-bold dark:text-white mb-6">Update Shopping Mall</h3>
                 <form className="mx-auto" onSubmit={handleSubmit(updateData)}>
                     <div className="relative z-0 w-full mb-5 group">
                         <input
