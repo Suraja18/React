@@ -5,6 +5,7 @@ import { db, storage } from '../../config/firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Image from '../../../../components/ShoppingMall/Others/Image';
 
 const Add = () => {
     const [shops, setShops] = useState([]);
@@ -15,7 +16,7 @@ const Add = () => {
         price: '',
         type: '',
         description: '',
-        image: null,
+        images: [],
         shop_id:'',
     });
     const productsCollectionRef = collection(db, "products");
@@ -33,20 +34,17 @@ const Add = () => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     };
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        const uuid = require('uuid');
-        const filename = `${Date.now()}${uuid.v4()}${file.name.replace(/^.*\./, '.')}`;
-        setFormData((prevFormData) => ({ ...prevFormData, image: file, filename }));
-    };
-
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const imageRef = ref(storage, `products/${formData.filename}`);
-        const uploadResult = await uploadBytes(imageRef, formData.image);
-        const downloadURL = await getDownloadURL(uploadResult.ref);
-        await addDoc(productsCollectionRef, {name: formData.name, unit: formData.unit, price: Number(formData.price), type: formData.type, description: formData.description, image: downloadURL, shop_id:formData.shop_id});
+        const imageArrays = formData.images.map((image) => {
+            const imageRef = ref(storage, `malls/${image.filename}`);
+            return uploadBytes(imageRef, image.file).then((uploadResult) => {
+              return getDownloadURL(uploadResult.ref);
+            });
+          });
+        const downloadUrls = await Promise.all(imageArrays);
+        await addDoc(productsCollectionRef, {name: formData.name, unit: formData.unit, price: Number(formData.price), type: formData.type, description: formData.description, images: downloadUrls, shop_id:formData.shop_id});
         Swal.fire('Success!', 'products Successfully Added', 'success');
         navigate('/shopping-mall/admin/products', { replace: true });
     };
@@ -110,23 +108,7 @@ const Add = () => {
                     </select>
                         <label htmlFor="shops" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Shopping shops:</label>
                     </div>
-                    <div className="relative z-0 w-full mb-5 group">
-                            <input
-                                type="file"
-                                name="image"
-                                id="image"
-                                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" "
-                                required
-                                onChange={handleImageChange}
-                            />
-                            <label
-                                htmlFor="image"
-                                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                            >
-                                Image
-                            </label>
-                    </div>
+                    <Image formData={formData} setFormData={setFormData} />
                     <div className="relative z-0 w-full mb-5 group">  
                         <textarea id="description" name="description" value={formData.description} onChange={handleChange} rows="4" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "></textarea>
                         <label for="description" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>

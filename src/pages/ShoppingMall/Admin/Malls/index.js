@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminLayout from '../../../../components/ShoppingMall/Admin/Layout';
 import TableButton from '../../../../components/ShoppingMall/Admin/TableButton';
 import { collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -9,7 +9,6 @@ import { deleteObject, ref } from 'firebase/storage';
 
 const Index = () => {
     const [malls, setMalls] = useState([]);
-    const mallsCollectionRef = collection(db, "malls");
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,17 +16,17 @@ const Index = () => {
     const [expandedRow, setExpandedRow] = useState(null);
     const [hiddenColumns, setHiddenColumns] = useState([]);
 
-    React.useEffect(() => {
-
+    useEffect(() => {
+        const mallsCollectionRef = collection(db, "malls");
         const getMalls = async () => {
             const data = await getDocs(mallsCollectionRef);
             setMalls(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        }
+        };
         getMalls();
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [mallsCollectionRef]);
+    }, []);
 
     const handleRowClick = (userId) => {
         setExpandedRow(expandedRow === userId ? null : userId);
@@ -61,7 +60,6 @@ const Index = () => {
             if (window.innerWidth <= mediaQuery.maxWidth && mediaQuery.maxWidth < matchedMaxWidth) {
                 newHiddenColumns = mediaQuery.columns;
                 matchedMaxWidth = mediaQuery.maxWidth;
-
             }
         }
         setHiddenColumns(newHiddenColumns);
@@ -97,8 +95,11 @@ const Index = () => {
         const mallDoc = doc(db, "malls", id);
         await getDoc(mallDoc).then(async (doc) => {
             if (doc.exists()) {
-                const oldImageRef = ref(storage, `${doc.data().image}`);
-                await deleteObject(oldImageRef);
+                const images = doc.data().images;
+                images.forEach((image) => {
+                    const oldImageRef = ref(storage, image);
+                    deleteObject(oldImageRef);
+                });
                 await deleteDoc(mallDoc);
                 Swal.fire('Success', `Malls deleted Successfully`, 'success');
                 setMalls((prevMalls) => prevMalls.filter((mall) => mall.id !== id));
@@ -142,7 +143,9 @@ const Index = () => {
                                         <td className="table-expand" onClick={() => handleRowClick(user.id)}>{user.name}</td>
                                         <td data-name="Location">{user.location}</td>
                                         <td data-name="Opening Hours">{user.opening_hours}</td>
-                                        <td data-name="Image"><img alt={user.name} className='img-mob' src={user.image} /></td>
+                                        <td data-name="Image">
+                                            {user && user.images && <img alt={user.name} className='img-mob' src={user.images[0]} />}
+                                        </td>
                                         <td><TableButton view={(id) => viewData(user.id)} update={(id) => editData(user.id)} delete={(id) => deleteData(user.id)} /></td>
                                     </tr>
                                     {expandedRow === user.id && (
@@ -154,7 +157,7 @@ const Index = () => {
                                                         if (hiddenColumns.includes(key)) {
                                                             const displayKey = key === 'Opening Hours' ? 'Opening Hours' : key;
                                                             const dKey = key === 'Opening Hours' ? 'opening_hours' : key.toLowerCase();
-                                                            const dataKey = dKey === 'image' ? <img alt={displayKey} className='img-mob' src={user[dKey]} /> : user[dKey];
+                                                            const dataKey = dKey === 'image' ? <img alt={displayKey} className='img-mob' src={user.images && user.images[0]} /> : user[dKey];
                                                             return (
                                                                 <li key={index} data-r-table-index={index + 1} data-dt-row="4" data-dt-column={index + 1 + hiddenColumns.indexOf(key)}>
                                                                     <span className="r-table-title">{displayKey} :</span>

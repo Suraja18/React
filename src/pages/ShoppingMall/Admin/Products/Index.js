@@ -104,11 +104,14 @@ const Index = () => {
         const productDoc = doc(db, "products", id);
         await getDoc(productDoc).then(async (doc) => {
             if (doc.exists()) {
-                const oldImageRef = ref(storage, `${doc.data().image}`);
-                await deleteObject(oldImageRef);
+                const images = doc.data().images;
+                images.forEach((image) => {
+                    const oldImageRef = ref(storage, image);
+                    deleteObject(oldImageRef);
+                });
                 await deleteDoc(productDoc);
                 Swal.fire('Success', `Products deleted Successfully`, 'success');
-                setProducts((prevproducts) => prevproducts.filter((shop) => shop.id !== id));
+                setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
             } else {
                 Swal.fire('Error', `Products doesn't exist`, 'error');
             }
@@ -149,7 +152,7 @@ const Index = () => {
                                         <td className="table-expand before" onClick={() => handleRowClick(user.id)}>{user.name}</td>
                                         <td>{user.unit}</td>
                                         <td>{user.price}</td>
-                                        <td><img alt={user.name} className='img-mob' src={user.image} /></td>
+                                        <td>{user && user.images && <img alt={user.name} className='img-mob' src={user.images[0]} />}</td>
                                         <td><TableButton view={(id) => viewData(user.id)} update={(id) => editData(user.id)} delete={(id) => deleteData(user.id)} /></td>
                                     </tr>
                                     {expandedRow === user.id && (
@@ -161,7 +164,7 @@ const Index = () => {
                                                         if (hiddenColumns.includes(key)) {
                                                             const displayKey = key;
                                                             const dKey = key.toLowerCase();
-                                                            const dataKey = dKey === 'image' ? <img alt={displayKey} className='img-mob' src={user[dKey]} /> : user[dKey];
+                                                            const dataKey = dKey === 'image' ? <img alt={displayKey} className='img-mob' src={user.images && user.images[0]} /> : user[dKey];
                                                             return (
                                                                 <li key={index} data-r-table-index={index + 1} data-dt-row="4" data-dt-column={index + 1 + hiddenColumns.indexOf(key)}>
                                                                     <span className="r-table-title">{displayKey} :</span>
