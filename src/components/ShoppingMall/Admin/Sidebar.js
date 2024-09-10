@@ -12,7 +12,7 @@ function Sidebar({ isSidebarOpen, closeSidebar }) {
         { name: 'Dashboard', link: '/shopping-mall/admin/dashboard' },
         { name: 'Malls', link: '/shopping-mall/admin/malls' },
         { name: 'Shops', link: '/shopping-mall/admin/shops' },
-        { name: 'Products', link: 'icons' },
+        { name: 'Products', link: '/shopping-mall/admin/products' },
     ], []);
 
     useEffect(() => {

@@ -19,6 +19,10 @@ import ShopIndex from './pages/ShoppingMall/Admin/Shops/Index';
 import ShopsAdd from './pages/ShoppingMall/Admin/Shops/Add';
 import ShopsView from './pages/ShoppingMall/Admin/Shops/View';
 import ShopsEdit from './pages/ShoppingMall/Admin/Shops/Edit';
+import ProductIndex from './pages/ShoppingMall/Admin/Products/Index';
+import ProductsAdd from './pages/ShoppingMall/Admin/Products/Add';
+import ProductsView from './pages/ShoppingMall/Admin/Products/View';
+import ProductsEdit from './pages/ShoppingMall/Admin/Products/Edit';
 
 function Router() {
     return (
@@ -40,14 +44,21 @@ function Router() {
                 {/* Admin Protected Route */}
                 <Route path="/shopping-mall/admin" element={<PrivateRoute />}>
                     <Route path="dashboard" element={<AdminIndex />} />
+                    {/* Malls */}
                     <Route path="malls" element={<MallIndex />} />
                     <Route path="malls/add" element={<MallsAdd />} />
                     <Route path="malls/view/:id" element={<MallsView />} />
                     <Route path="malls/edit/:id" element={<MallsEdit />} />
+                    {/* Shops */}
                     <Route path="shops" element={<ShopIndex />} />
                     <Route path="shops/add" element={<ShopsAdd />} />
                     <Route path="shops/view/:id" element={<ShopsView />} />
                     <Route path="shops/edit/:id" element={<ShopsEdit />} />
+                    {/* Products */}
+                    <Route path="products" element={<ProductIndex />} />
+                    <Route path="products/add" element={<ProductsAdd />} />
+                    <Route path="products/view/:id" element={<ProductsView />} />
+                    <Route path="products/edit/:id" element={<ProductsEdit />} />
                 </Route>
 
             </Routes>

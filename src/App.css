@@ -269,6 +269,9 @@ th, td {
 .users-table tr td.table-expand.before:nth-child(2)::before{
   display: inline-block;
 }
+.users-table tr.tr-expanding td.table-expand.before:nth-child(2)::before {
+  transform: rotate(90deg);
+}
 @media (max-width: 880px){
   .users-container{
     margin: 10px;

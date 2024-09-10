@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/ShoppingMall/Admin/Layout';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 function Index() {
+  const [mallCount, setMallCount] = useState(0);
+  const [shopCount, setShopCount] = useState(0);
+  const [productCount, setProductCount] = useState(0);
 
+  useEffect(() => {
+    const mallsCollectionRef = collection(db, "malls");
+    const shopsCollectionRef = collection(db, "shops");
+    const productsCollectionRef = collection(db, "products");
+    const getMalls = async () => {
+      const mallsCollection = await getDocs(mallsCollectionRef);
+      setMallCount(mallsCollection.docs.length);
+    };
+    const getShops = async () => {
+      const shopsCollection = await getDocs(shopsCollectionRef);
+      setShopCount(shopsCollection.docs.length);
+    };
+    const getProducts = async () => {
+      const productsCollection = await getDocs(productsCollectionRef);
+      setProductCount(productsCollection.docs.length);
+    };
+    getMalls();
+    getShops();
+    getProducts();
+  }, []);
 
   return (
     <>
@@ -16,7 +41,7 @@ function Index() {
                 <div className="card-body">
                   <div className="card-stats">
                     <div className="stats">
-                      <div className="number">$6.200</div>
+                      <div className="number">{mallCount}</div>
                     </div>
                   </div>
                 </div>
@@ -30,7 +55,7 @@ function Index() {
                 <div className="card-body">
                   <div className="card-stats">
                     <div className="stats">
-                      <div className="number">2.49%</div>
+                      <div className="number">{shopCount}</div>
                     </div>
                   </div>
                 </div>
@@ -44,7 +69,7 @@ function Index() {
                 <div className="card-body">
                   <div className="card-stats">
                     <div className="stats">
-                      <div className="number">44K</div>
+                      <div className="number">{productCount}</div>
                     </div>
                   </div>
                 </div>
