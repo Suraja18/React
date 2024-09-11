@@ -102,18 +102,25 @@ const Index = () => {
 
     const deleteData = async (id) => {
         const mallDoc = doc(db, "shops", id);
-        await getDoc(mallDoc).then(async (doc) => {
-            if (doc.exists()) {
-                const oldImageRef = ref(storage, `${doc.data().image}`);
-                await deleteObject(oldImageRef);
-                await deleteDoc(mallDoc);
-                Swal.fire('Success', `Shops deleted Successfully`, 'success');
-                setShops((prevShops) => prevShops.filter((shop) => shop.id !== id));
-            } else {
-                Swal.fire('Error', `Shops doesn't exist`, 'error');
-            }
-        });
-        
+        try{
+            await getDoc(mallDoc).then(async (doc) => {
+                if (doc.exists()) {
+                    const images = doc.data().images;
+                    images.forEach((image) => {
+                        const oldImageRef = ref(storage, image);
+                        deleteObject(oldImageRef);
+                    });
+                    await deleteDoc(mallDoc);
+                    Swal.fire('Success', `Shops deleted Successfully`, 'success');
+                    setShops((prevShops) => prevShops.filter((shop) => shop.id !== id));
+                } else {
+                    Swal.fire('Error', `Shops doesn't exist`, 'error');
+                }
+            });
+        } catch(error){
+            console.error('Error deleting shop data:', error);
+            Swal.fire('Error', `Failed to delete shop data`, 'error');
+        } 
     }
 
     return (
@@ -149,7 +156,7 @@ const Index = () => {
                                         <td className="table-expand before" onClick={() => handleRowClick(user.id)}>{user.name}</td>
                                         <td data-name="Contact">{user.contact}</td>
                                         <td data-name="Opening Hours">{user.opening_hours}</td>
-                                        <td data-name="Image"><img alt={user.name} className='img-mob' src={user.image} /></td>
+                                        <td data-name="Image">{user && user.images && <img alt={user.name} className='img-mob' src={user.images[0]} />}</td>
                                         <td><TableButton view={(id) => viewData(user.id)} update={(id) => editData(user.id)} delete={(id) => deleteData(user.id)} /></td>
                                     </tr>
                                     {expandedRow === user.id && (
@@ -161,7 +168,7 @@ const Index = () => {
                                                         if (hiddenColumns.includes(key)) {
                                                             const displayKey = key === 'Opening Hours' ? 'Opening Hours' : key;
                                                             const dKey = key === 'Opening Hours' ? 'opening_hours' : key.toLowerCase();
-                                                            const dataKey = dKey === 'image' ? <img alt={displayKey} className='img-mob' src={user[dKey]} /> : user[dKey];
+                                                            const dataKey = dKey === 'image' ? <img alt={displayKey} className='img-mob' src={user.images && user.images[0]} /> : user[dKey];
                                                             return (
                                                                 <li key={index} data-r-table-index={index + 1} data-dt-row="4" data-dt-column={index + 1 + hiddenColumns.indexOf(key)}>
                                                                     <span className="r-table-title">{displayKey} :</span>

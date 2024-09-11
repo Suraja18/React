@@ -87,7 +87,7 @@ const Edit = () => {
             });
         } catch (error) {
             console.error('Error updating mall data:', error);
-            Swal.fire('Error', `Failed to update mall data: ${error.message}`, 'error');
+            Swal.fire('Error', `Failed to update mall data`, 'error');
         }
     }
     return (

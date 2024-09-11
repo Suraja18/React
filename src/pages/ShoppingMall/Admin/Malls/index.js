@@ -93,20 +93,26 @@ const Index = () => {
 
     const deleteData = async (id) => {
         const mallDoc = doc(db, "malls", id);
-        await getDoc(mallDoc).then(async (doc) => {
-            if (doc.exists()) {
-                const images = doc.data().images;
-                images.forEach((image) => {
-                    const oldImageRef = ref(storage, image);
-                    deleteObject(oldImageRef);
-                });
-                await deleteDoc(mallDoc);
-                Swal.fire('Success', `Malls deleted Successfully`, 'success');
-                setMalls((prevMalls) => prevMalls.filter((mall) => mall.id !== id));
-            } else {
-                Swal.fire('Error', `Malls doesn't exist`, 'error');
-            }
-        });
+        try{
+            await getDoc(mallDoc).then(async (doc) => {
+                if (doc.exists()) {
+                    const images = doc.data().images;
+                    images.forEach((image) => {
+                        const oldImageRef = ref(storage, image);
+                        deleteObject(oldImageRef);
+                    });
+                    await deleteDoc(mallDoc);
+                    Swal.fire('Success', `Malls deleted Successfully`, 'success');
+                    setMalls((prevMalls) => prevMalls.filter((mall) => mall.id !== id));
+                } else {
+                    Swal.fire('Error', `Malls doesn't exist`, 'error');
+                }
+            });
+        } catch(error){
+            console.error('Error deleting mall data:', error);
+            Swal.fire('Error', `Failed to delete mall data`, 'error');
+        }
+        
         
     }
 

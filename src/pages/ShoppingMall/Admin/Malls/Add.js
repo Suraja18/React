@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import Image from '../../../../components/ShoppingMall/Others/Image';
 
 function Add() {
-    const [formList, setFormList] = useState([{
+    const [formList, setFormList] = useState([{ //First Creating an array of formList
         name: '',
         location: '',
         openingHours: '',
@@ -20,18 +20,18 @@ function Add() {
     const mallsCollectionRef = collection(db, "malls");
     const navigate = useNavigate();
 
-    const handleChange = (e, index) => {
+    const handleChange = (e, index) => { //array handling save the form
         const { name, value } = e.target;
         const updatedFormList = [...formList];
         updatedFormList[index][name] = value;
         setFormList(updatedFormList);
     };
 
-    const handleAddForm = () => {
-        setFormList([...formList, { name: '', location: '', openingHours: '', images: [], imageURL: '' }]);
+    const handleAddForm = () => { //When adding new form, leave old form unchanged and create blank form
+        setFormList([...formList, { name: '', location: '', openingHours: '', images: [], imageURL: '' }]); 
     };
 
-    const handleRemoveForm = (index) => {
+    const handleRemoveForm = (index) => { //Remove the form using splice of form through the index
         const updatedFormList = [...formList];
         updatedFormList.splice(index, 1);
         setFormList(updatedFormList);
@@ -39,26 +39,34 @@ function Add() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const uploadPromises = formList.map(async (formData) => {
-            const imageArrays = formData.images.map((image) => {
-                const imageRef = ref(storage, `malls/${image.filename}`);
-                return uploadBytes(imageRef, image.file).then((uploadResult) => {
-                    return getDownloadURL(uploadResult.ref);
+        try{
+            const uploadAllForm = formList.map(async (formData) => {
+                const imageArrays = formData.images.map((image) => {
+                    const imageRef = ref(storage, `malls/${image.filename}`);
+                    return uploadBytes(imageRef, image.file).then((uploadResult) => {
+                        return getDownloadURL(uploadResult.ref);
+                    });
+                });
+                const downloadUrls = await Promise.all(imageArrays);
+                const openingHours = moment(formData.openingHours, 'HH:mm').format('hh:mm A');
+                return addDoc(mallsCollectionRef, {
+                    name: formData.name,
+                    location: formData.location,
+                    opening_hours: openingHours,
+                    images: downloadUrls,
                 });
             });
-            const downloadUrls = await Promise.all(imageArrays);
-            const openingHours = moment(formData.openingHours, 'HH:mm').format('hh:mm A');
-            return addDoc(mallsCollectionRef, {
-                name: formData.name,
-                location: formData.location,
-                opening_hours: openingHours,
-                images: downloadUrls,
-            });
-        });
+    
+            await Promise.all(uploadAllForm); //addDoc Array for each data
+            Swal.fire('Success!', 'All Malls Successfully Added', 'success');
+            navigate('/shopping-mall/admin/malls', { replace: true });
 
-        await Promise.all(uploadPromises);
-        Swal.fire('Success!', 'All Malls Successfully Added', 'success');
-        navigate('/shopping-mall/admin/malls', { replace: true });
+        } catch(error)
+        {
+            console.error('Error adding mall data:', error);
+            Swal.fire('Error', `Failed to delete mall data`, 'error');
+        }
+
     };
 
     return (
@@ -122,7 +130,7 @@ function Add() {
                                 const updatedFormList = [...formList];
                                 updatedFormList[index] = updatedData;
                                 setFormList(updatedFormList);
-                            }} />
+                                }} index={index} />
 
                             {formList.length > 1 && (
                                 <button
@@ -144,7 +152,7 @@ function Add() {
                     </button>
                     <button
                         type="submit"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        className="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
                         Submit All
                     </button>

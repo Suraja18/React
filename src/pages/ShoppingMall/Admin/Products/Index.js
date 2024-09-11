@@ -102,21 +102,24 @@ const Index = () => {
 
     const deleteData = async (id) => {
         const productDoc = doc(db, "products", id);
-        await getDoc(productDoc).then(async (doc) => {
-            if (doc.exists()) {
-                const images = doc.data().images;
-                images.forEach((image) => {
-                    const oldImageRef = ref(storage, image);
-                    deleteObject(oldImageRef);
-                });
-                await deleteDoc(productDoc);
-                Swal.fire('Success', `Products deleted Successfully`, 'success');
-                setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
-            } else {
-                Swal.fire('Error', `Products doesn't exist`, 'error');
-            }
-        });
-        
+        try{
+            await getDoc(productDoc).then(async (doc) => {
+                if (doc.exists()) {
+                    const images = doc.data().images;
+                    images.forEach((image) => {
+                        const oldImageRef = ref(storage, image);
+                        deleteObject(oldImageRef);
+                    });
+                    await deleteDoc(productDoc);
+                    Swal.fire('Success', `Products deleted Successfully`, 'success');
+                    setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+                } else {
+                    Swal.fire('Error', `Products doesn't exist`, 'error');
+                }
+            });
+        }catch(error){
+            Swal.fire('Error', `Failed to delete product`, 'error');
+        } 
     }
 
     return (
