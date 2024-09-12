@@ -191,7 +191,6 @@ const Index = () => {
                                         </tr>
                                     )}
                                 </React.Fragment>
-
                             ))}
 
                         </tbody>
