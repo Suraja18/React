@@ -150,7 +150,7 @@ const Index = () => {
                         </thead>
                         <tbody>
                             {currentShops.map((user, index) => (
-                                <React.Fragment key={index}>
+                                <React.Fragment key={user.id}>
                                     <tr className={expandedRow === user.id ? 'tr-expanding' : ''}>
                                         <td>{index + 1}</td>
                                         <td className="table-expand before" onClick={() => handleRowClick(user.id)}>{user.name}</td>

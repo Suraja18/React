@@ -9,7 +9,7 @@ import { deleteObject, ref } from 'firebase/storage';
 
 const Index = () => {
     const [products, setProducts] = useState([]);
-    const productsCollectionRef = useMemo(() => collection(db, "products"), []);
+    const productsCollectionRef = useMemo(() => collection(db, "products"),[]);
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);

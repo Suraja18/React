@@ -1,100 +1,80 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import UserLayout from '../../../components/ShoppingMall/User/Layout';
 import '../CSS/style.css'
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
-const Product = ({ image, title, brand, price, rating, reviews }) => {
+const Product = ({ images, name, type, price, unit, description, shopName, shopHours, shopContact, mallName, mallLocation }) => {
   return (
     <div className="product">
-      <img src={image} alt={title} />
+      <img src={images[0]} alt={name} style={{ height:250, justifyContent:"center" }} />
       <div className="product-info">
-        <h3>{title}</h3>
-        <p>{brand}</p>
-        <p>${price}</p>
+        <h3>{name}</h3>
+        <p>{type}</p>
+        <p>${price} / {unit}</p>
         <div className="ratings">
-          <span>{rating}</span>
-          <span>({reviews} reviews)</span>
+          <span>{description}</span>
         </div>
+        <p>Shop Name: {shopName}</p>
+        <p>Opening Hours: {shopHours}</p>
+        <p>Contact: {shopContact}</p>
+        <p>Mall Name: {mallName}</p>
+        <p>Address: {mallLocation}</p>
       </div>
     </div>
   );
 };
 
 const Index = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        setLoading(true);
+        const productsCollectionRef = collection(db, "products");
+        const data = await getDocs(productsCollectionRef);
+        const productsData = await Promise.all(
+          data.docs.map(async (productDoc) => {
+            const product = productDoc.data();
+            const shopDoc = await getDoc(doc(db, "shops", product.shop_id));
+            const shopData = shopDoc.exists() ? shopDoc.data() : {};
+            const mallDoc = await getDoc(doc(db, "malls", shopData.mall_id));
+            const mallData = mallDoc.exists() ? mallDoc.data() : {};
+            return {
+              ...product,
+              id: productDoc.id,
+              shopName: shopData.name,
+              shopHours: shopData.opening_hours,
+              shopContact: shopData.contact,
+              mallName: mallData.name,
+              mallLocation: mallData.location,
+            };
+          })
+        );
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProducts();
+  }, []);
 
-  const products = [
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Zizi Western Boots",
-      brand: "SHUSHOP",
-      price: "49.99",
-      rating: "4.5",
-      reviews: "100",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Made In Portugal Suede Pamela Wool Lined Boots",
-      brand: "MIZ MOOZ",
-      price: "79.99",
-      rating: "4.8",
-      reviews: "200",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Classic Mini Iridescent Boots",
-      brand: "REVEAL DESIGNER",
-      price: "119.99",
-      rating: "5.0",
-      reviews: "500",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Men's Via Olympus Cushioned Running Sneakers",
-      brand: "ALTRA",
-      price: "99.99",
-      rating: "4.3",
-      reviews: "300",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Zizi Western Boots",
-      brand: "SHUSHOP",
-      price: "49.99",
-      rating: "4.5",
-      reviews: "100",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Made In Portugal Suede Pamela Wool Lined Boots",
-      brand: "MIZ MOOZ",
-      price: "79.99",
-      rating: "4.8",
-      reviews: "200",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Classic Mini Iridescent Boots",
-      brand: "REVEAL DESIGNER",
-      price: "119.99",
-      rating: "5.0",
-      reviews: "500",
-    },
-    {
-      image: "https://img.freepik.com/free-photo/delicious-lobster-gourmet-seafood_23-2151713033.jpg?t=st=1725272171~exp=1725275771~hmac=6d1db8cfaa056a9bc2a6244392dfd0e0cfb8af7c622660e20469b3055e02431b&w=996",
-      title: "Men's Via Olympus Cushioned Running Sneakers",
-      brand: "ALTRA",
-      price: "99.99",
-      rating: "4.3",
-      reviews: "300",
-    },
-  ];
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  
+
   return (
     <>
       <UserLayout>
           <div>USER index</div>
           <div>
             <div className="products">
-              {products.map((product, index) => (
-                <Product key={index} {...product} />
+              {products.map((product) => (
+                <Product key={product.id} {...product} />
               ))}
             </div>
           </div>
