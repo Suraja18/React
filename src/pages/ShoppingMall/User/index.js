@@ -21,7 +21,7 @@ const Product = ({ images, name, type, price, unit, description, shopName, shopH
         <p>Mall Name: {mallName}</p>
         <p>Address: {mallLocation}</p>
       </div>
-    </div>
+    </div> 
   );
 };
 
