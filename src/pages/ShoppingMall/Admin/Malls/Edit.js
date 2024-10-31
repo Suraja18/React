@@ -1,7 +1,6 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { db, storage } from '../../config/firebase';
 import AdminLayout from '../../../../components/ShoppingMall/Admin/Layout';
 import { useForm } from 'react-hook-form';
@@ -32,7 +31,7 @@ const Edit = () => {
                     }));
                     setValue("openingHours", doc.data().opening_hours);
                 } else {
-                    Swal.fire('Error', `Malls doesn't exist`, 'error');
+                    // Swal.fire('Error', `Malls doesn't exist`, 'error');
                     navigate(`/shopping-mall/admin/malls`, { replace: true });
                 }
             });
@@ -77,17 +76,17 @@ const Edit = () => {
                     } else {
                         await updateDoc(mallDoc, newData);
                     }
-                    Swal.fire('Success', `Malls updated successfully`, 'success');
+                    // Swal.fire('Success', `Malls updated successfully`, 'success');
                     navigate(`/shopping-mall/admin/malls`, { replace: true });
 
                 } else {
-                    Swal.fire('Error', `Malls doesn't exist`, 'error');
+                    // Swal.fire('Error', `Malls doesn't exist`, 'error');
                     navigate(`/shopping-mall/admin/malls`, { replace: true });
                 }
             });
         } catch (error) {
             console.error('Error updating mall data:', error);
-            Swal.fire('Error', `Failed to update mall data`, 'error');
+            // Swal.fire('Error', `Failed to update mall data`, 'error');
         }
     }
     return (

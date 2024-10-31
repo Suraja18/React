@@ -4,7 +4,6 @@ import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { db, storage } from '../../config/firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import Image from '../../../../components/ShoppingMall/Others/Image';
 
 const Add = () => {
@@ -61,11 +60,11 @@ const Add = () => {
                 return addDoc(productsCollectionRef, { name: formData.name, unit: formData.unit, price: Number(formData.price), type: formData.type, description: formData.description, images: downloadUrls, shop_id: formData.shop_id });
             });
             await Promise.all(uploadAllForm); //Run addDoc Simultaneously
-            Swal.fire('Success!', 'products Successfully Added', 'success');
+            // Swal.fire('Success!', 'products Successfully Added', 'success');
             navigate('/shopping-mall/admin/products', { replace: true });
         } catch (error) {
             console.error('Error adding product data:', error);
-            Swal.fire('Error', `Failed to delete product data`, 'error');
+            // Swal.fire('Error', `Failed to delete product data`, 'error');
         }
     };
 

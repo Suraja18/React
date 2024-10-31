@@ -5,7 +5,6 @@ import { db, storage } from '../../config/firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import Swal from 'sweetalert2';
 import Image from '../../../../components/ShoppingMall/Others/Image';
 
 function Add() {
@@ -57,14 +56,12 @@ function Add() {
                 });
             });
     
-            await Promise.all(uploadAllForm); //addDoc Array for each data
-            Swal.fire('Success!', 'All Malls Successfully Added', 'success');
+            await Promise.all(uploadAllForm); 
             navigate('/shopping-mall/admin/malls', { replace: true });
 
         } catch(error)
         {
-            console.error('Error adding mall data:', error);
-            Swal.fire('Error', `Failed to delete mall data`, 'error');
+            //
         }
 
     };

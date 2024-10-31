@@ -1,7 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { db } from '../../config/firebase';
 import AdminLayout from '../../../../components/ShoppingMall/Admin/Layout';
 import { useForm } from 'react-hook-form';
@@ -22,7 +21,7 @@ const View = () => {
                     setImage(doc.data().images);
                     setValue("openingHours", doc.data().opening_hours);
                 } else {
-                    Swal.fire('Error', `Malls doesn't exist`, 'error');
+                    // Swal.fire('Error', `Malls doesn't exist`, 'error');
                     navigate(`/shopping-mall/admin/malls`, { replace: true });
                 }
             });

@@ -1,7 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { db } from '../../config/firebase';
 import AdminLayout from '../../../../components/ShoppingMall/Admin/Layout';
 import { useForm } from 'react-hook-form';
@@ -30,7 +29,7 @@ const View = () => {
                     const mallDoc = await getDoc(mallDocRef);
                     setValue("mallsName", mallDoc.data().name);
                 } else {
-                    Swal.fire('Error', `Shops doesn't exist`, 'error');
+                    // Swal.fire('Error', `Shops doesn't exist`, 'error');
                     navigate(`/shopping-mall/admin/shops`, { replace: true });
                 }
             } catch (error) {
