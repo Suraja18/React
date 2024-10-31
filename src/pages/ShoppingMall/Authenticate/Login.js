@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { auth, googleProvider } from '../config/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-import Swal from 'sweetalert2';
 
 function Login() {
     const navigate = useNavigate();
@@ -23,16 +22,16 @@ function Login() {
         try {
             await createUserWithEmailAndPassword(auth, data.email, data.password)
                 .then(() => {
-                    Swal.fire('Success!', 'User Successfully Registered', 'success');
+                    //
                     setTimeout(() => {
                         navigate('/login');
                     }, 3000);
                 });
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
-                Swal.fire('Error', 'Email address is already in use.', 'error');
+                //
             } else {
-                Swal.fire('Error', 'An error occurred. Please try again later.', 'error');
+                //
             }
         }
     };
@@ -41,16 +40,16 @@ function Login() {
         try {
             await signInWithEmailAndPassword(auth, data.email, data.password)
                 .then(() => {
-                    Swal.fire('Success!', 'Login Successful', 'success');
+                    //
                     setTimeout(() => {
                         navigate('/shopping-mall/admin/dashboard');
                     }, 3000);
                 });
         } catch (error) {
             if (error.code === 'auth/invalid-credential') {
-                Swal.fire('Error', `Email address and password don't match.`, 'error');
+                //
             } else {
-                Swal.fire('Error', 'An error occurred. Please try again later.', 'error');
+                //
             }
         }
     };
@@ -59,7 +58,7 @@ function Login() {
         try {
             await signInWithPopup(auth, googleProvider)
                 .then(() => {
-                    Swal.fire('Success!', 'Login Successful', 'success');
+                   //
                     setTimeout(() => {
                         navigate('/shopping-mall/admin/dashboard');
                     }, 3000);

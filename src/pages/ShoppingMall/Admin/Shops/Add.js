@@ -5,7 +5,6 @@ import { db, storage } from '../../config/firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import Swal from 'sweetalert2';
 import Form from '../../../../components/ShoppingMall/Admin/Malls/Form';
 
 const Add = () => {
@@ -48,11 +47,11 @@ const Add = () => {
             });
 
             await Promise.all(uploadAllForm);
-            Swal.fire('Success!', 'Shops Successfully Added', 'success');
+            // Swal.fire('Success!', 'Shops Successfully Added', 'success');
             navigate('/shopping-mall/admin/shops', { replace: true });
         } catch (error) {
             console.error('Error adding shop data:', error);
-            Swal.fire('Error', `Failed to delete shop data`, 'error');
+            // Swal.fire('Error', `Failed to delete shop data`, 'error');
         }
 
     };

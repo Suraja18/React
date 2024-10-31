@@ -4,7 +4,6 @@ import TableButton from '../../../../components/ShoppingMall/Admin/TableButton';
 import { collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db, storage } from '../../config/firebase';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { deleteObject, ref } from 'firebase/storage';
 
 const Index = () => {
@@ -84,7 +83,7 @@ const Index = () => {
             if (doc.exists()) {
                 navigate(`/shopping-mall/admin/products/view/${id}`);
             } else {
-                Swal.fire('Error', `Products doesn't exist`, 'error');
+                // Swal.fire('Error', `Products doesn't exist`, 'error');
             }
         });
     }
@@ -95,7 +94,7 @@ const Index = () => {
             if (doc.exists()) {
                 navigate(`/shopping-mall/admin/products/edit/${id}`);
             } else {
-                Swal.fire('Error', `Products doesn't exist`, 'error');
+                // Swal.fire('Error', `Products doesn't exist`, 'error');
             }
         });
     }
@@ -111,14 +110,14 @@ const Index = () => {
                         deleteObject(oldImageRef);
                     });
                     await deleteDoc(productDoc);
-                    Swal.fire('Success', `Products deleted Successfully`, 'success');
+                    // Swal.fire('Success', `Products deleted Successfully`, 'success');
                     setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
                 } else {
-                    Swal.fire('Error', `Products doesn't exist`, 'error');
+                    // Swal.fire('Error', `Products doesn't exist`, 'error');
                 }
             });
         }catch(error){
-            Swal.fire('Error', `Failed to delete product`, 'error');
+            // Swal.fire('Error', `Failed to delete product`, 'error');
         } 
     }
 

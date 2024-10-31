@@ -5,7 +5,6 @@ import { db, storage } from '../../config/firebase';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
-import Swal from 'sweetalert2';
 import Form from '../../../../components/ShoppingMall/Admin/Malls/Form';
 
 const Edit = () => {
@@ -44,7 +43,7 @@ const Edit = () => {
 
                 setCurrentShopIndex(shopData.indexOf(shopToEdit) + 1); 
             } else {
-                Swal.fire('Error', `Shop doesn't exist`, 'error');
+                // Swal.fire('Error', `Shop doesn't exist`, 'error');
                 navigate(`/shopping-mall/admin/shops`, { replace: true });
             }
         };
@@ -75,7 +74,7 @@ const Edit = () => {
 
             setCurrentShopIndex(currentShopIndex + 1);
         } else {
-            Swal.fire('Error', `No more shops available to append`, 'error');
+            // Swal.fire('Error', `No more shops available to append`, 'error');
         }
     };
 
@@ -124,12 +123,12 @@ const Edit = () => {
             });
     
             await Promise.all(updateAllForm);
-            Swal.fire('Success', `Shops updated successfully`, 'success');
+            // Swal.fire('Success', `Shops updated successfully`, 'success');
             navigate(`/shopping-mall/admin/shops`, { replace: true });
     
         } catch (error) {
             console.error("Error updating documents:", error);
-            Swal.fire('Error', `Failed to update shop data`, 'error');
+            // Swal.fire('Error', `Failed to update shop data`, 'error');
         }
     };
     

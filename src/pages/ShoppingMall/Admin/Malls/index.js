@@ -4,7 +4,6 @@ import TableButton from '../../../../components/ShoppingMall/Admin/TableButton';
 import { collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db, storage } from '../../config/firebase';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { deleteObject, ref } from 'firebase/storage';
 
 const Index = () => {
@@ -75,7 +74,7 @@ const Index = () => {
             if (doc.exists()) {
                 navigate(`/shopping-mall/admin/malls/view/${id}`);
             } else {
-                Swal.fire('Error', `Malls doesn't exist`, 'error');
+                // Swal.fire('Error', `Malls doesn't exist`, 'error');
             }
         });
     }
@@ -86,7 +85,7 @@ const Index = () => {
             if (doc.exists()) {
                 navigate(`/shopping-mall/admin/malls/edit/${id}`);
             } else {
-                Swal.fire('Error', `Malls doesn't exist`, 'error');
+                // Swal.fire('Error', `Malls doesn't exist`, 'error');
             }
         });
     }
@@ -102,15 +101,15 @@ const Index = () => {
                         deleteObject(oldImageRef);
                     });
                     await deleteDoc(mallDoc);
-                    Swal.fire('Success', `Malls deleted Successfully`, 'success');
+                    // Swal.fire('Success', `Malls deleted Successfully`, 'success');
                     setMalls((prevMalls) => prevMalls.filter((mall) => mall.id !== id));
                 } else {
-                    Swal.fire('Error', `Malls doesn't exist`, 'error');
+                    // Swal.fire('Error', `Malls doesn't exist`, 'error');
                 }
             });
         } catch(error){
             console.error('Error deleting mall data:', error);
-            Swal.fire('Error', `Failed to delete mall data`, 'error');
+            // Swal.fire('Error', `Failed to delete mall data`, 'error');
         }
         
         
